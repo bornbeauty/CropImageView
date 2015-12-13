@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+    <!--android:background="@color/crop__button_bar"
+        <include
+            android:id="@+id/done_cancel_bar"
+            android:layout_below="@+id/cropView"
+            layout="@layout/crop__layout_done_cancel" />
+    -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/done_cancel_bar"
+        android:layout_alignParentBottom="true"
+        style="@style/Crop.DoneCancelBar">
+
+        <FrameLayout
+            android:id="@+id/btn_cancel"
+            style="@style/Crop.ActionButton">
+
+            <TextView style="@style/Crop.ActionButtonText.Cancel" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/btn_done"
+            style="@style/Crop.ActionButton">
+
+            <TextView style="@style/Crop.ActionButtonText.Done" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <com.jimbo.mycrop.CropImageView
+        android:id="@+id/cropView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:padding="15dp"
+        android:layout_above="@+id/done_cancel_bar"
+        android:scaleType="fitCenter" />
+</RelativeLayout>
