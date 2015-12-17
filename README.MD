@@ -1,6 +1,4 @@
 1.在CropActivity中的onActivityResult方法中获取图片的uri
-然后你自己编码一下就好了 存的位置是 PATH = "image.jpg";//内存卡根目录下的image.jpg
-
 
 2.调用CropActivity实现裁剪功能
 Intent intent = new Intent(this, CropActivity,class);

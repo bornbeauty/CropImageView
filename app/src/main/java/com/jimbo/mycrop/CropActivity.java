@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Camera;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,6 +34,10 @@ public class CropActivity extends Activity {
     CropImageView mCrop = null;
     FrameLayout mDone = null;
     FrameLayout mCancel = null;
+
+    public static Bitmap mBitmap;
+
+    private Uri mUri;
 
     private boolean isCamera = false;
 
@@ -97,6 +102,10 @@ public class CropActivity extends Activity {
         mDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                startActivity(new Intent(CropActivity.this, ShowResultActivity.class));
+
+                /*
                 Point[] points = null;
                 try {
                     points = mCrop.getPoints();
@@ -114,7 +123,7 @@ public class CropActivity extends Activity {
                 bundle.putIntArray(CROP_IMAGE_POINTS, p);
                 intent.putExtras(bundle);
                 setResult(CROP_IMAGE_RESULT, intent);
-                finish();
+                finish();*/
             }
         });
     }
@@ -126,6 +135,7 @@ public class CropActivity extends Activity {
             try {
                 Uri imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),PATH));
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                intent.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION, "vertical");
                 startActivityForResult(intent, TAKE_PICTURE);
             } catch (NullPointerException e) {
                 e.printStackTrace();
@@ -142,12 +152,16 @@ public class CropActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (RESULT_OK == resultCode && START_PICK_CODE == requestCode) {
             Log.d("CropActivity", "获取图库图片");
-            mCrop.setImageBitmap(getBitmapFromUri(data.getData()));
+            mUri = data.getData();
+            mBitmap = getBitmapFromUri(data.getData());
+            mCrop.setImageBitmap(mBitmap);
         } else if (resultCode == RESULT_OK && requestCode == TAKE_PICTURE){
             Log.d("CropActivity", "获取拍照图片");
-            Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()
+            mUri = Uri.parse(Environment.getExternalStorageDirectory()
                     +"/"+PATH);
-            mCrop.setImageBitmap(bitmap);
+            mBitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()
+                    +"/"+PATH);
+            mCrop.setImageBitmap(mBitmap);
         } else {
             CropActivity.this.finish();
         }
